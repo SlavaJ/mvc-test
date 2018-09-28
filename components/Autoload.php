@@ -3,7 +3,7 @@ spl_autoload_register(function ($className) {
     $arrayPaths = array(
         '/models/',
         '/components/',
-        '/models/'
+        '/controllers/'
     );
 
     foreach ($arrayPaths as $path) {
