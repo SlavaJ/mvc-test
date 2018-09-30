@@ -1,8 +1,8 @@
 <?php
 
-include_once ROOT . '/models/User.php';
+namespace controllers;
 
-class SiteController
+class HomeController
 {
 
     public function actionIndex()

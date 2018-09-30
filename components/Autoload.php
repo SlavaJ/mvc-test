@@ -1,15 +1,19 @@
 <?php
-spl_autoload_register(function ($className) {
-    $arrayPaths = array(
-        '/models/',
-        '/components/',
-        '/controllers/'
-    );
 
-    foreach ($arrayPaths as $path) {
-        $path = ROOT . $path . $className . '.php';
-        if (is_file($path)) {
-            include_once $path;
-        }
+namespace components;
+
+class Autoload
+{
+
+    public static function init()
+    {
+        spl_autoload_register(['static','loadClass']);
     }
-});
+
+    public static function loadClass($className)
+    {
+            $className = str_replace('\\', DIRECTORY_SEPARATOR, $className);
+            require_once ROOT . DIRECTORY_SEPARATOR . $className . '.php';
+    }
+
+}

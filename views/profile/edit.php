@@ -1,3 +1,8 @@
+<?php
+
+use models\User;
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,11 +55,6 @@
     </div>
 </section>
 
-<script
-    src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous">
-</script>
 <script src="/template/js/ajax.js"></script>
 
 </body>

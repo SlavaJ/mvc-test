@@ -1,7 +1,15 @@
 <?php
 
+namespace controllers;
+
+use models\User;
+
 class UserController
 {
+    public function actionIndex()
+    {
+        echo 'work';
+    }
 
     public function actionRegistration()
     {
@@ -11,28 +19,28 @@ class UserController
         $phone = '';
         $password = '';
         $result = false;
-        
+
         if (isset($_POST['submit'])) {
             $name = $_POST['name'];
             $login = $_POST['login'];
             $email = $_POST['email'];
             $phone = $_POST['phone'];
             $password = $_POST['password'];
-            
+
             $errors = false;
-            
+
             if (!User::checkName($name)) {
                 $errors[] = 'Имя не должно быть короче 2-х символов';
             }
-            
+
             if (!User::checkEmail($email)) {
                 $errors[] = 'Неправильный email';
             }
-            
+
             if (!User::checkPassword($password)) {
                 $errors[] = 'Пароль не должен быть короче 6-ти символов';
             }
-            
+
             if (User::checkEmailExists($email)) {
                 $errors[] = 'Такой email уже используется';
             }
@@ -44,7 +52,7 @@ class UserController
             if (User::checkPhoneExists($phone)) {
                 $errors[] = 'Такой телефон уже есть.';
             }
-            
+
             if ($errors == false) {
                 $result = User::register($name, $login, $email, $phone, $password);
             }

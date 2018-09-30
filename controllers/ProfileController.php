@@ -1,5 +1,9 @@
 <?php
 
+namespace controllers;
+
+use models\User;
+
 class ProfileController
 {
 

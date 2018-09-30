@@ -1,4 +1,9 @@
 <?php
+
+namespace models;
+
+use components\Db;
+
 class User
 {
 
@@ -13,11 +18,11 @@ class User
 
 
         $result = $db->prepare($sql);
-        $result->bindParam(':name', $name, PDO::PARAM_STR);
-        $result->bindParam(':login', $login, PDO::PARAM_STR);
-        $result->bindParam(':email', $email, PDO::PARAM_STR);
-        $result->bindParam(':phone', $phone, PDO::PARAM_STR);
-        $result->bindParam(':password', $pass, PDO::PARAM_STR);
+        $result->bindParam(':name', $name, \PDO::PARAM_STR);
+        $result->bindParam(':login', $login, \PDO::PARAM_STR);
+        $result->bindParam(':email', $email, \PDO::PARAM_STR);
+        $result->bindParam(':phone', $phone, \PDO::PARAM_STR);
+        $result->bindParam(':password', $pass, \PDO::PARAM_STR);
 
         return $result->execute();
     }
@@ -73,7 +78,7 @@ class User
         $sql = 'SELECT COUNT(*) FROM users WHERE login = :login';
 
         $result = $db->prepare($sql);
-        $result->bindParam(':login', $login, PDO::PARAM_STR);
+        $result->bindParam(':login', $login, \PDO::PARAM_STR);
         $result->execute();
 
         if ($result->fetchColumn()) {
@@ -91,12 +96,12 @@ class User
         if ($id > 0) {
             $sql = 'SELECT COUNT(*) FROM users WHERE email = :email AND id <> :id';
             $result = $db->prepare($sql);
-            $result->bindParam(':email', $email, PDO::PARAM_STR);
-            $result->bindParam(':id', $id, PDO::PARAM_INT);
+            $result->bindParam(':email', $email, \PDO::PARAM_STR);
+            $result->bindParam(':id', $id, \PDO::PARAM_INT);
         } else {
             $sql = 'SELECT COUNT(*) FROM users WHERE email = :email';
             $result = $db->prepare($sql);
-            $result->bindParam(':email', $email, PDO::PARAM_STR);
+            $result->bindParam(':email', $email, \PDO::PARAM_STR);
         }
 
         $result->execute();
@@ -116,12 +121,12 @@ class User
         if ($id > 0) {
             $sql = 'SELECT COUNT(*) FROM users WHERE phone = :phone AND id <> :id';
             $result = $db->prepare($sql);
-            $result->bindParam(':phone', $phone, PDO::PARAM_STR);
-            $result->bindParam(':id', $id, PDO::PARAM_INT);
+            $result->bindParam(':phone', $phone, \PDO::PARAM_STR);
+            $result->bindParam(':id', $id, \PDO::PARAM_INT);
         } else {
             $sql = 'SELECT COUNT(*) FROM users WHERE phone = :phone';
             $result = $db->prepare($sql);
-            $result->bindParam(':phone', $phone, PDO::PARAM_STR);
+            $result->bindParam(':phone', $phone, \PDO::PARAM_STR);
         }
 
         $result->execute();
@@ -140,8 +145,8 @@ class User
             $sql = 'SELECT * FROM users WHERE id = :id';
 
             $result = $db->prepare($sql);
-            $result->bindParam(':id', $id, PDO::PARAM_INT);
-            $result->setFetchMode(PDO::FETCH_ASSOC);
+            $result->bindParam(':id', $id, \PDO::PARAM_INT);
+            $result->setFetchMode(\PDO::FETCH_ASSOC);
             $result->execute();
 
             return $result->fetch();
@@ -155,8 +160,8 @@ class User
             $sql = 'SELECT * FROM users WHERE email = :email';
 
             $result = $db->prepare($sql);
-            $result->bindParam(':email', $email, PDO::PARAM_STR);
-            $result->setFetchMode(PDO::FETCH_ASSOC);
+            $result->bindParam(':email', $email, \PDO::PARAM_STR);
+            $result->setFetchMode(\PDO::FETCH_ASSOC);
             $result->execute();
 
             return $result->fetch();
@@ -172,10 +177,10 @@ class User
             WHERE id = :id";
 
         $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        $result->bindParam(':name', $name, PDO::PARAM_STR);
-        $result->bindParam(':email', $email, PDO::PARAM_STR);
-        $result->bindParam(':phone', $phone, PDO::PARAM_STR);
+        $result->bindParam(':id', $id, \PDO::PARAM_INT);
+        $result->bindParam(':name', $name, \PDO::PARAM_STR);
+        $result->bindParam(':email', $email, \PDO::PARAM_STR);
+        $result->bindParam(':phone', $phone, \PDO::PARAM_STR);
 
         return $result->execute();
     }
@@ -193,7 +198,7 @@ class User
             $sql = 'SELECT * FROM users WHERE email = :email';
 
             $result = $db->prepare($sql);
-            $result->bindParam(':email', $email, PDO::PARAM_STR);
+            $result->bindParam(':email', $email, \PDO::PARAM_STR);
             $result->execute();
 
             $user = $result->fetch();
