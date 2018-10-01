@@ -1,7 +1,7 @@
 <?php
 use components\Autoload;
 use components\App;
-use models\User;
+use components\HandleException;
 
 ini_set('display_errors','1');
 error_reporting(E_ALL);
@@ -13,5 +13,6 @@ define('ROOT', dirname(__FILE__));
 require_once(ROOT.'/components/Autoload.php');
 
 Autoload::init();
-App::bootstrap();
+HandleException::init();
+App::init();
 App::$core->launch();

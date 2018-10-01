@@ -4,12 +4,17 @@ namespace components;
 
 use components\App;
 use components\Router;
+use components\exceptions\InvalidRouteException;
+use components\exceptions\InvalidClassException;
+use components\exceptions\InvalidMethodException;
 
 class Core
 {
     public $defaultControllerName = 'HomeController';
 
     public $defaultActionName = "actionIndex";
+
+    public $defaultActionParams = [];
 
     public function launch()
     {
@@ -24,47 +29,41 @@ class Core
     {
         $controller = '\\controllers\\' . $this->defaultControllerName;
         $actionName = $this->defaultActionName;
+        $actionParam = $this->defaultActionParams;
 
-        if (empty($params)){
-            $controllerName = new $controller;
-           return $controllerName->$actionName();
+
+        if (!empty($params)){
+            if (count($params) == 1) {
+                $controller = '\\controllers\\'.ucfirst($params[0]).'Controller';
+            } elseif (count($params) == 2) {
+                $controller = '\\controllers\\'.ucfirst($params[0]).'Controller';
+                $actionName = 'action'.ucfirst($params[1]);
+            } else {
+                $controller = '\\controllers\\'.ucfirst(array_shift($params[0])).'Controller';
+                $actionName = 'action'.ucfirst(array_shift($params[1]));
+                $actionParam = $params;
+            }
         }
 
-        if (count($params) == 1) {
-            $controller = '\\controllers\\'.ucfirst($params[0]).'Controller';
-            $controllerName  =  new $controller;;
-            return $controllerName->$actionName();
-        } elseif (count($params) == 2) {
-            $controller = '\\controllers\\'.ucfirst($params[0]).'Controller';
-            $controllerName  =  new $controller;
-            $actionName = 'action'.ucfirst($params[1]);
+
+        $path = ROOT.str_replace('\\','/',$controller).'.php';
+        if(!file_exists($path)){
+            throw new InvalidRouteException('Error path '.$path);
+        }
+
+        $controllerName = new $controller;
+
+        if(!class_exists(ucfirst($controller))) {
+            throw new InvalidClassException('Class is not exist.');
+        } elseif(!method_exists($controllerName, $actionName)) {
+            throw new InvalidMethodException('Method is not exist.');
+        }
+
+        if(empty($actionParam)) {
             return $controllerName->$actionName();
         } else {
-            $controller = '\\controllers\\'.ucfirst(array_shift($params[0])).'Controller';
-            $controllerName  =  new $controller;
-            $actionName = 'action'.ucfirst(array_shift($params[1]));
-            return $controllerName->$actionName($params);
+            return $controllerName->$actionName($actionParam);
         }
-
-        $controllerName = empty($controllerName) ? $this->defaultControllerName : ucfirst($controllerName);
-        /*if(!file_exists(ROOT.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.$controllerName.'.php')){
-            throw new \App\Exceptions\InvalidRouteException();
-        }*/
-        require_once ROOT.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.$controllerName.'Controller.php';
-        $controllerName = empty($controllerName) ? $this->defaultControllerName : ucfirst($controllerName);
-
-        /*if(!class_exists("\\Controllers\\".ucfirst($controllerName))){
-            throw new \App\Exceptions\InvalidRouteException();
-        }*/
-        $controllerName = "\\controllers\\".ucfirst($controllerName).'Controller';
-        $controller = new $controllerName;
-        $actionName = empty($actionName) ? $this->defaultActionName : 'action'.ucfirst($actionName);
-        /*if (!method_exists($controller, $actionName)){
-            throw new \App\Exceptions\InvalidRouteException();
-        }*/
-        $params = empty($params) ? '' : $params;
-        return $controller->$actionName($params);
-
     }
 
 }
