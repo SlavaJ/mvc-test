@@ -151,6 +151,7 @@ class User
 
             return $result->fetch();
         }
+        return false;
     }
 
     public static function getUserByEmail(string $email)
@@ -166,6 +167,7 @@ class User
 
             return $result->fetch();
         }
+        return false;
     }
 
     public static function edit(int $id, string $name, string $email, string $phone)
@@ -188,7 +190,6 @@ class User
 
     public static function checkUserData(string $email, string $password)
     {
-        $error = '';
 
         if ($user = static::getUserByEmail($email)) {
 
@@ -229,7 +230,7 @@ class User
             return $_SESSION['user'];
         }
 
-        header("Location: /user/login");
+       return false; //header("Location: /user/login");
     }
 
     public static function isGuest()
